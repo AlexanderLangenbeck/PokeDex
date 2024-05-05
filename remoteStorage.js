@@ -27,7 +27,29 @@ async function loadPokemon(start){
         let pokemons = await response.json();
 
         pokemonName.push(pokemons['name']);
-        renderCard(pokemons, i);
+        loadSmallCard(pokemons, i);
+    }
+}
+
+
+function loadSmallCard(currentPokemon,i){
+     let content = document.getElementById('pokeContent');
+     content.innerHTML += smallCardInput(currentPokemon,i);
+     checkForSecondType(currentPokemon,i)
+}
+
+
+async function openBigCard(id){
+    let content = document.getElementById('content');
+    content.innerHTML = ``;
+    let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    let response =  await fetch(url);
+    let pokemon = await response.json();
+
+    content.innerHTML = openBigCardInput(pokemon);
+    if(pokemon["types"].length > 1){
+        let type = document.getElementById('headPart');
+        type.innerHTML += `<div class="type">${pokemon['types']['1']['type']['name']}</div>`; 
     }
 }
 
@@ -35,13 +57,6 @@ async function loadPokemon(start){
 async function loadNextPokemon(){
     nextPokemon += 20;
     await loadPokemon(nextPokemon);
-}
-
-
-function renderCard(currentPokemon,i){
-     let content = document.getElementById('pokeContent');
-     content.innerHTML += cardInput(currentPokemon,i);
-     checkForSecondType(currentPokemon,i)
 }
 
 
@@ -53,7 +68,35 @@ function checkForSecondType(currentPokemon,i){
 }
 
 
-function cardInput(currentPokemon,i){
+function search(){
+    let input = document.getElementById("search").value.toLowerCase();
+    let pokemonCards = document.querySelectorAll('.pokeCard');
+
+    if(input.length >=3){
+        searchTrue(input, pokemonCards);
+    }
+    else{
+        pokemonCards.forEach(container => {
+            container.style.display ='flex';
+        });
+    }
+}
+
+
+function searchTrue(input, pokemonCards){
+    pokemonCards.forEach(container => {
+        let pokemonName = container.querySelector('#pokemonName').innerText.toLowerCase();
+        if(pokemonName.includes(input)){
+            container.style.display ='flex';
+        }
+        else{
+            container.style.display ='none';
+        }
+        })
+}
+
+
+function smallCardInput(currentPokemon,i){
     return/*html*/`
     <div onclick ="openBigCard(${currentPokemon['id']})" id="pokeCard" class="pokeCard bg-${currentPokemon['types']['0']['type']['name']}">
         <div id="infoShow${i}" class="leftSideCard">
@@ -66,46 +109,6 @@ function cardInput(currentPokemon,i){
         </div>
     </div>
     `;
-}
-
-
-function search(){
-    let input = document.getElementById("search").value.toLowerCase();
-    let pokemonCards = document.querySelectorAll('.pokeCard');
-
-    if(input.length >=3){
-        pokemonCards.forEach(container => {
-        let pokemonName = container.querySelector('#pokemonName').innerText.toLowerCase();
-        if(pokemonName.includes(input)){
-            container.style.display ='flex';
-        }
-        else{
-            container.style.display ='none';
-        }
-        
-        })
-    }
-    else{
-        pokemonCards.forEach(container => {
-            container.style.display ='flex';
-        });
-    }
-}
-
-
-async function openBigCard(id){
-    let content = document.getElementById('content');
-    content.innerHTML = ``;
-    console.log(id);
-    let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-    let response =  await fetch(url);
-    let pokemon = await response.json();
-
-    content.innerHTML = openBigCardInput(pokemon);
-    if(pokemon["types"].length > 1){
-        let type = document.getElementById('headPart');
-        type.innerHTML += `<div class="type">${pokemon['types']['1']['type']['name']}</div>`; 
-    }
 }
 
 
@@ -130,7 +133,7 @@ function openBigCardInput(pokemon){
                         <span class="hover">Moves</span>
                         <span onclick="openBigCard(${pokemon['id']+1})"class="hover">></span>
                     </div>
-                    <div class="pokeomnStats">
+                    <div id="pokemonStats" class="pokeomnStats">
                         <span><b>Height:</b>  ${pokemon['height']}</span>
                         <span><b>Weight:</b>  ${pokemon['weight']}</span>
                         <span><b>Abilities:</b>  ${pokemon['abilities']['0']['ability']['name']}</span>
@@ -144,36 +147,36 @@ function openBigCardInput(pokemon){
 
 
 function bigCardContentStatsInput(pokemon){
-    let bigCardContent = document.getElementById('bigCardContent');
+    let bigCardContent = document.getElementById('pokemonStats');
     bigCardContent.innerHTML = /*html */`
         <table>
             <tr>
                 <th>Kategorie</th>
-                <th>Wert</th>
+                <th>Werte</th>
             </tr>
             <tr>
                 <td>HP</td>
-                <td></td>
+                <td>${pokemon['stats']['0']['base_stat']}</td>
             </tr>
             <tr>
                 <td>Attack</td>
-                <td></td>
+                <td>${pokemon['stats']['1']['base_stat']}</td>
             </tr>
             <tr>
                 <td>Defense</td>
-                <td></td>
+                <td>${pokemon['stats']['2']['base_stat']}</td>
             </tr>
             <tr>
                 <td>Special Attack</td>
-                <td></td>
+                <td>${pokemon['stats']['3']['base_stat']}</td>
             </tr>
             <tr>
                 <td>Special Defense</td>
-                <td></td>
+                <td>${pokemon['stats']['4']['base_stat']}</td>
             </tr>
             <tr>
                 <td>Speed</td>
-                <td></td>
+                <td>${pokemon['stats']['5']['base_stat']}</td>
             </tr>
         </table>
     `;
