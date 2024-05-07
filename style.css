@@ -139,7 +139,7 @@ h2{
     justify-content: space-between;
     align-items: center;
     width:100%;
-    height:95%;
+    height:100%;
 }
 
 .bidCardHeader{
@@ -157,17 +157,30 @@ h2{
     width:80%;
 }
 
+
 .bigCardImg{
     height:250px;
     margin-top: -220px;
     width:auto;
 }
 
+
 .content{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
+.logoName{
+    display: flex;
+    gap:8px;
+}
+
+
+.headerLogo{
+    height: 48px;
+}
+
 
 .pokemonInput{
     display: flex;
@@ -198,4 +211,58 @@ h2{
     width:80%;
     height:70%;
     justify-content: space-between;
+}
+
+@media (max-width:600px){
+    header{
+        flex-direction: column;
+        
+    }
+    .input{
+        width:250px;
+    }
+
+    .bigCard{
+        width:450px;
+        height:70vh;
+    }
+    .pokemonInput{
+        justify-content: center;
+    }
+
+    .bigCardImg{
+        height:200px;
+    }
+
+}
+
+
+@media (max-width:500px){
+    .bigCard{
+        width:350px;
+        height:50vh;
+    }
+    .bigCardImg{
+        height:100px;
+        margin-top: -90px;
+    }
+    .bigCardContent{
+        font-size: 16px;
+    }
+    .bidCardHeader{
+        font-size: 34px;
+    }
+}
+
+@media (max-width:400px){
+    .pokeCard{
+        width:260px;
+    }
+    .bigCard{
+        width:300px;
+        height:40vh;
+    }
+    .bidCardHeader{
+        font-size: 30px;
+    }
 }

@@ -5,11 +5,13 @@ let pokemonName = [];
 let pokemonStats = [];
 let pokemonId = [];
 
+
 function init(){
     nextPokemon =1;
     loadContent();
     loadPokemon();
 }
+
 
 function loadContent(){
     let content = document.getElementById('content');
@@ -136,7 +138,7 @@ function openBigCardInput(i){
                     <div id="bigCardContent" class="bigCardContent">
                         <span onclick="openBigCard(${i-1})" class="hover"><</span>
                         <span onclick="bigCardContentAboutInput(${i})" class="hover">About</span>
-                        <span onclick="ss(${i})" class="hover">Stats</span>
+                        <span onclick="bigCardContentStats(${i})" class="hover">Stats</span>
                         <span onclick="bigCardContentMovesInput(${i})" class="hover">Moves</span>
                         <span onclick="openBigCard(${i+1})"class="hover">></span>
                     </div>
@@ -164,22 +166,51 @@ function bigCardContentAboutInput(i){
 }
 
 
-function ss(i){
+function bigCardContentStats(i){
     let bigCardContent = document.getElementById('pokemonStats');
-    bigCardContent.innerHTML = /*html */`
+    let hpStat = (250 - pokemonStats[i]['0']['base_stat']);
+    let attackStats = 250 - pokemonStats[i]['1']['base_stat'];
+    let defenseStats = 250 - pokemonStats[i]['2']['base_stat'];
+    let specAttackStats = 250 - pokemonStats[i]['3']['base_stat'];
+    let specDefense = 250 - pokemonStats[i]['4']['base_stat'];
+    let speed = 250 - pokemonStats[i]['5']['base_stat'];
+    bigCardContent.innerHTML = bigCardContentStatsInput(i,hpStat,attackStats,defenseStats,specAttackStats,specDefense,speed);
+}
+
+
+function bigCardContentStatsInput(i,hpStat,attackStats,defenseStats,specAttackStats,specDefense,speed){
+    return /*html */`
     <svg width="400" height="100%" viewBox="10 0 500 300" xmlns="http://www.w3.org/2000/svg">
 
         <rect x="0" y="0" width="500" height="100%" fill="#f0f0f0" />
 
         <rect x="50" y="50" width="50" height="0" fill="#4285F4">
-            <animate attributeName="height" from="0" to="250" dur="1s" fill="freeze"/>
-            <animate attributeName="y" from="250" to="0" dur="1s" fill="freeze"/>
+            <animate attributeName="height" from="0" to="${pokemonStats[i]['0']['base_stat']}" dur="1s" fill="freeze"/>
+            <animate attributeName="y" from="250" to="${hpStat}" dur="1s" fill="freeze"/>
         </rect>
-        <rect x="120" y="80" width="50" height="170" fill="#34A853" />
-        <rect x="190" y="30" width="50" height="220" fill="#FBBC05" />
-        <rect x="260" y="110" width="50" height="140" fill="#EA4335" />
-        <rect x="330" y="60" width="50" height="190" fill="#9C27B0" />
-        <rect x="400" y="150" width="50" height="100" fill="#FF5722" />
+
+        <rect x="120" y="80" width="50" height="170" fill="#34A853" >
+            <animate attributeName="height" from="0" to="${pokemonStats[i]['1']['base_stat']}" dur="1s" fill="freeze"/>
+            <animate attributeName="y" from="250" to="${attackStats}" dur="1s" fill="freeze"/>
+        </rect>
+
+        <rect x="190" y="30" width="50" height="220" fill="#FBBC05" >
+            <animate attributeName="height" from="0" to="${pokemonStats[i]['2']['base_stat']}" dur="1s" fill="freeze"/>
+            <animate attributeName="y" from="250" to="${defenseStats}" dur="1s" fill="freeze"/>
+        </rect>
+
+        <rect x="260" y="110" width="50" height="140" fill="#EA4335" >
+        <animate attributeName="height" from="0" to="${pokemonStats[i]['3']['base_stat']}" dur="1s" fill="freeze"/>
+            <animate attributeName="y" from="250" to="${specAttackStats}" dur="1s" fill="freeze"/>
+        </rect>
+        <rect x="330" y="60" width="50" height="190" fill="#9C27B0" >
+        <animate attributeName="height" from="0" to="${pokemonStats[i]['4']['base_stat']}" dur="1s" fill="freeze"/>
+            <animate attributeName="y" from="250" to="${specDefense}" dur="1s" fill="freeze"/>
+        </rect>
+        <rect x="400" y="150" width="50" height="100" fill="#FF5722" >
+        <animate attributeName="height" from="0" to="${pokemonStats[i]['5']['base_stat']}" dur="1s" fill="freeze"/>
+            <animate attributeName="y" from="250" to="${speed}" dur="1s" fill="freeze"/>
+        </rect>
 
         <text x="20" y="250" fill="black">0</text>
         <text x="20" y="200" fill="black">50</text>
@@ -201,43 +232,6 @@ function ss(i){
         <text x="305" y="265" fill="black">Speed</text>
     </svg>
     `
-}
-
-
-function bigCardContentStatsInput(i){
-    let bigCardContent = document.getElementById('pokemonStats');
-    bigCardContent.innerHTML = /*html */`
-        <table>
-            <tr>
-                <th>Kategorie</th>
-                <th>Werte</th>
-            </tr>
-            <tr>
-                <td>HP</td>
-                <td>${pokemonStats[i]['0']['base_stat']}</td>
-            </tr>
-            <tr>
-                <td>Attack</td>
-                <td>${pokemonStats[i]['1']['base_stat']}</td>
-            </tr>
-            <tr>
-                <td>Defense</td>
-                <td>${pokemonStats[i]['2']['base_stat']}</td>
-            </tr>
-            <tr>
-                <td>Special Attack</td>
-                <td>${pokemonStats[i]['3']['base_stat']}</td>
-            </tr>
-            <tr>
-                <td>Special Defense</td>
-                <td>${pokemonStats[i]['4']['base_stat']}</td>
-            </tr>
-            <tr>
-                <td>Speed</td>
-                <td>${pokemonStats[i]['5']['base_stat']}</td>
-            </tr>
-        </table>
-    `;
 }
 
 
