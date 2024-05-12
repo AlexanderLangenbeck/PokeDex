@@ -53,13 +53,22 @@ function loadSmallCard(i){
 
 
 async function openBigCard(i){
-    let content = document.getElementById('content');
-    content.innerHTML = ``;
-    content.innerHTML = openBigCardInput(i);
-    if(pokemon[i]["types"].length > 1){
-        let type = document.getElementById('headPart');
-        type.innerHTML += `<div class="type">${pokemon[i]['types']['1']['type']['name']}</div>`; 
+    let content = document.getElementById('bigLevel');
+    let smallCard = document.getElementById('content');
+    if(i>=0){
+        smallCard.style.display ='none';
+        document.getElementById('bigLevel').classList.add('bigLevel');
+        content.innerHTML = openBigCardInput(i);
+        if(pokemon[i]["types"].length > 1){
+            let type = document.getElementById('headPart');
+            type.innerHTML += `<div class="type">${pokemon[i]['types']['1']['type']['name']}</div>`; 
+        }
     }
+    else{
+        i=0;
+        openBigCard(i);
+    }
+    
 }
 
 
@@ -105,6 +114,14 @@ function searchTrue(input, pokemonCards){
 }
 
 
+function closeBigCard(){
+    let smallCard = document.getElementById('content');
+    smallCard.style.display ='flex';
+    document.getElementById('bigLevel').innerHTML=``;
+    document.getElementById('bigLevel').classList.remove('bigLevel');
+}
+
+
 function smallCardInput(i){
     return/*html*/`
     <div onclick ="openBigCard(${pokemonId[i]-1})" id="pokeCard" class="pokeCard bg-${pokemon[i]['types']['0']['type']['name']}">
@@ -129,7 +146,7 @@ function openBigCardInput(i){
                     <div class="bidCardHeader">
                         <div>${pokemonName[i]}</div>
                         <div>#${i+1}</div>
-                        <div onclick="init()" class="hover">X</div>
+                        <div onclick="closeBigCard()" class="hover">X</div>
                     </div>
                     <span class="type">${pokemon[i]['types']['0']['type']['name']}</span>
                 </div>
@@ -156,6 +173,7 @@ function openBigCardInput(i){
 
 
 function bigCardContentAboutInput(i){
+    document.getElementById('pokemonStats').style.flexDirection = 'column';
     let bigCardContent = document.getElementById('pokemonStats');
     bigCardContent.innerHTML = /*html */`
         <span><b>Height:</b>  ${pokemon[i]['height']}</span>
@@ -167,6 +185,7 @@ function bigCardContentAboutInput(i){
 
 
 function bigCardContentStats(i){
+    document.getElementById('pokemonStats').style.flexDirection = 'row';
     let bigCardContent = document.getElementById('pokemonStats');
     let hpStat = (250 - pokemonStats[i]['0']['base_stat']);
     let attackStats = 250 - pokemonStats[i]['1']['base_stat'];
@@ -236,6 +255,7 @@ function bigCardContentStatsInput(i,hpStat,attackStats,defenseStats,specAttackSt
 
 
 function bigCardContentMovesInput(i){
+    document.getElementById('pokemonStats').style.flexDirection = 'row';
     let bigCardContent = document.getElementById('pokemonStats');
     bigCardContent.innerHTML = /*html */`
         <ul>
@@ -247,8 +267,6 @@ function bigCardContentMovesInput(i){
             <li>${pokemon[i]['moves']['5']['move']['name']}</li>
             <li>${pokemon[i]['moves']['6']['move']['name']}</li>
             <li>${pokemon[i]['moves']['7']['move']['name']}</li>
-            <li>${pokemon[i]['moves']['8']['move']['name']}</li>
-            <li>${pokemon[i]['moves']['9']['move']['name']}</li>
         </ul>
     `;
 }
